@@ -29,6 +29,7 @@ import prRewildingBisontes from '../assets/images/prensa/rewilding-bisontes.jpg'
 import prNuevaAlcarriaResort from '../assets/images/prensa/nuevaalcarria-resort.jpg';
 import prDecanoRecuencoVive from '../assets/images/prensa/decano-recuencovive.jpg';
 import prDecanoBosqueInnova from '../assets/images/prensa/decano-bosqueinnova.jpg';
+import escudo from '../assets/images/escudo/Escudo_del_Ayuntamiento_de_El_Recuenco.png';
 
 const base = import.meta.env.BASE_URL;
 const ogImg = await getImage({ src: heroPueblo, width: 1200, height: 630, format: 'jpg' });
@@ -420,7 +421,10 @@ const galeriaImages = [
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
         <!-- Info -->
         <div class="bg-blanco rounded-2xl p-6 sm:p-8 reveal reveal-delay-1">
-          <h3 class="text-xl font-bold mb-6">Ayuntamiento de El Recuenco</h3>
+          <div class="flex items-center gap-3 mb-6">
+            <Image src={escudo} alt="Escudo del Ayuntamiento de El Recuenco" widths={[40, 80]} sizes="40px" class="w-10 h-auto" />
+            <h3 class="text-xl font-bold">Ayuntamiento de<br>El Recuenco</h3>
+          </div>
 
           <div class="space-y-5">
             <div class="flex gap-4 items-start">

@@ -1,4 +1,7 @@
 ---
+import { Image } from 'astro:assets';
+import escudo from '../assets/images/escudo/Escudo_del_Ayuntamiento_de_El_Recuenco.png';
+
 interface Props {
   currentPage?: 'inicio' | 'rutas';
 }
@@ -23,8 +26,9 @@ const links = [
   currentPage !== 'inicio' && "bg-verde-oscuro/95 backdrop-blur-md shadow-sm"
 ]} data-scrollable={currentPage === 'inicio'}>
   <div class="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16 sm:h-20">
-    <a href={base} class="text-blanco text-base sm:text-lg font-bold tracking-tight no-underline hover:opacity-80 transition-opacity">
-      El Recuenco
+    <a href={base} class="flex items-center gap-2 text-blanco no-underline hover:opacity-80 transition-opacity">
+      <Image src={escudo} alt="Escudo de El Recuenco" widths={[32, 64]} sizes="32px" class="w-8 h-auto" />
+      <span class="text-base sm:text-lg font-bold tracking-tight">Ayto. El Recuenco</span>
     </a>
 
     <button id="nav-toggle" class="md:hidden flex flex-col gap-[5px] bg-transparent border-none cursor-pointer p-2" aria-label="Abrir menú">
