@@ -105,6 +105,8 @@ const galeriaImages = [
         class="absolute top-1/2 left-1/2 w-[177.78vh] min-w-full min-h-full -translate-x-1/2 -translate-y-1/2"
         style="aspect-ratio:16/9; border:0;"
         allow="autoplay; encrypted-media"
+        sandbox="allow-scripts allow-same-origin allow-presentation"
+        referrerpolicy="no-referrer-when-downgrade"
         loading="eager"
       ></iframe>
     </div>
@@ -525,6 +527,8 @@ const galeriaImages = [
         iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1`;
         iframe.title = el.querySelector('img')?.alt || '';
         iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+        iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-presentation');
+        iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
         iframe.allowFullscreen = true;
         iframe.className = 'absolute inset-0 w-full h-full';
         iframe.style.border = '0';
