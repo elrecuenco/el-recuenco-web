@@ -1,0 +1,30 @@
+---
+interface Props {
+  variant?: 'inicio' | 'rutas';
+}
+
+const { variant = 'inicio' } = Astro.props;
+const isRutas = variant === 'rutas';
+---
+
+{isRutas ? (
+  <footer class="bg-verde-oscuro text-blanco/70 py-6 sm:py-8">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center text-xs sm:text-sm">
+      <p>Ayuntamiento de El Recuenco · Plaza de Nuestra Señora de la Bienvenida, 7</p>
+      <p class="mt-1">
+        <a href="mailto:secretaria.aytoelrecuenco@gmail.com" class="text-blanco/80 hover:text-blanco no-underline transition-colors">secretaria.aytoelrecuenco@gmail.com</a>
+      </p>
+    </div>
+  </footer>
+) : (
+  <footer class="bg-texto py-8 sm:py-10 px-4 sm:px-6">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 sm:gap-4">
+      <div class="flex items-center gap-3">
+        <span class="text-blanco font-bold">El Recuenco</span>
+        <span class="text-blanco/30">·</span>
+        <span class="text-blanco/50 text-sm">Guadalajara, Castilla-La Mancha</span>
+      </div>
+      <p class="text-blanco/40 text-sm">&copy; {new Date().getFullYear()} Ayuntamiento de El Recuenco</p>
+    </div>
+  </footer>
+)}

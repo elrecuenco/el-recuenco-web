@@ -1,0 +1,92 @@
+@import "tailwindcss";
+@import "@fontsource-variable/inter";
+
+@theme {
+  --color-tierra: #A37B2C;
+  --color-tierra-oscuro: #7A5A1E;
+  --color-tierra-claro: #D4A843;
+  --color-verde: #3D7B5F;
+  --color-verde-oscuro: #1B3A2D;
+  --color-verde-claro: #5BA88A;
+  --color-piedra: #E8E0D0;
+  --color-piedra-claro: #F5F1EA;
+  --color-piedra-oscuro: #C4B99E;
+  --color-fondo: #FAFAF7;
+  --color-texto: #1A1A1A;
+  --color-texto-claro: #6B7280;
+  --color-blanco: #FFFFFF;
+  --font-titulo: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-texto: var(--font-titulo);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+body {
+  font-family: var(--font-texto);
+  color: var(--color-texto);
+  background-color: var(--color-fondo);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scroll reveal animations */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+
+/* Hero: en móvil se muestra la imagen; en desktop el vídeo la tapa */
+@media (min-width: 768px) {
+  .hero-fallback-img {
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+}
+
+/* Scroll-padding ajustado por tamaño de nav */
+@media (max-width: 639px) {
+  html {
+    scroll-padding-top: 64px;
+  }
+}
+
+/* Section divider */
+.section-line {
+  width: 48px;
+  height: 2px;
+  background: var(--color-tierra);
+  border-radius: 1px;
+}
+
+/* Modern scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-piedra-claro);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-piedra-oscuro);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-tierra);
+}

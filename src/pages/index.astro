@@ -1,0 +1,561 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { Image, getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Gallery from '../components/Gallery.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import heroPueblo from '../assets/images/pueblo/vista-pueblo-altura.jpg';
+import imgPueblo2 from '../assets/images/pueblo/vista-pueblo-altura-2.jpg';
+import imgIglesia from '../assets/images/patrimonio/iglesia-monumento-vidrieros.jpg';
+import imgErmitaFrontal from '../assets/images/patrimonio/ermita-frontal.jpg';
+import imgErmitaInterior from '../assets/images/patrimonio/ermita-interior.jpg';
+import imgErmitaLateral from '../assets/images/patrimonio/ermita-lateral.jpg';
+import imgCasaConsistorial from '../assets/images/patrimonio/casa-consistorial.jpg';
+import imgBisonte1 from '../assets/images/bisontes/bisonte-1.jpg';
+import imgBisonte2 from '../assets/images/bisontes/bisonte-2.jpg';
+import imgCabra from '../assets/images/entorno-natural/cabra-montesa.jpg';
+import imgCorraliza from '../assets/images/entorno-natural/paraje-corraliza-atalaya.jpg';
+import imgCeno from '../assets/images/entorno-natural/paraje-el-ceno.jpg';
+import imgCorzos from '../assets/images/entorno-natural/paraje-los-corzos.jpg';
+import prNuevaAlcarriaCrecimiento from '../assets/images/prensa/nuevaalcarria-crecimiento.jpg';
+import prEldiarioBisontes from '../assets/images/prensa/eldiario-bisontes.jpg';
+import prCopeBisonte from '../assets/images/prensa/cope-bisonte.png';
+import prEldebateBisontes from '../assets/images/prensa/eldebate-bisontes.jpeg';
+import prElespanolBruselas from '../assets/images/prensa/elespanol-bruselas.jpg';
+import prEldiarioKike from '../assets/images/prensa/eldiario-kike.jpg';
+import prXatakaKike from '../assets/images/prensa/xataka-kike.jpeg';
+import prRewildingBisontes from '../assets/images/prensa/rewilding-bisontes.jpg';
+import prNuevaAlcarriaResort from '../assets/images/prensa/nuevaalcarria-resort.jpg';
+import prDecanoRecuencoVive from '../assets/images/prensa/decano-recuencovive.jpg';
+import prDecanoBosqueInnova from '../assets/images/prensa/decano-bosqueinnova.jpg';
+
+const base = import.meta.env.BASE_URL;
+const ogImg = await getImage({ src: heroPueblo, width: 1200, height: 630, format: 'jpg' });
+const ogImageUrl = new URL(ogImg.src, Astro.site).href;
+
+const articulos: { medio: string; fecha: string; titulo: string; url: string; imagen: ImageMetadata | null }[] = [
+  { medio: 'Nueva Alcarria', fecha: '3 ene 2026', titulo: 'El pueblo del Alto Tajo que ha crecido un 31 por ciento en los últimos cuatro años', url: 'https://nuevaalcarria.com/articulos/el-pueblo-del-alto-tajo-que-ha-crecido-un-31-por-ciento-en-los-ultimos-cuatro-anos', imagen: prNuevaAlcarriaCrecimiento },
+  { medio: 'elDiario.es', fecha: '25 ene 2026', titulo: 'Nueve bisontes europeos llegan a El Recuenco para prevenir incendios forestales en el Alto Tajo', url: 'https://www.eldiario.es/castilla-la-mancha/provincias/guadalajara/nueve-bisontes-europeos-llegan-recuenco-prevenir-incendios-forestales-alto-tajo_1_12934000.html', imagen: prEldiarioBisontes },
+  { medio: 'COPE', fecha: '28 ene 2026', titulo: 'El bisonte europeo regresa a España para salvar los montes de Guadalajara', url: 'https://www.cope.es/emisoras/castilla-la-mancha/guadalajara-provincia/guadalajara/noticias/bisonte-europeo-regresa-espana-salvar-montes-guadalajara-20260128_3296363.html', imagen: prCopeBisonte },
+  { medio: 'El Debate', fecha: '26 ene 2026', titulo: 'Nueve bisontes han llegado a este rincón de Guadalajara (y no es por lo que imaginas)', url: 'https://www.eldebate.com/espana/castilla-la-mancha/20260126/nueve-bisontes-han-llegado-este-rincon-guadalajara-no-imaginas_377442.html', imagen: prEldebateBisontes },
+  { medio: 'Nueva Alcarria', fecha: '1 oct 2025', titulo: `Enrique Collada, primer español en ganar el premio "Político del Año 2025" por One Young World`, url: 'https://nuevaalcarria.com/articulos/enrique-collada-alcalde-de-el-recuenco-primer-espanol-en-ganar-el-premio-politico-del-ano-2025-a-nivel-mundial-por-la-organizacion-one-young-world', imagen: null },
+  { medio: 'El Español', fecha: '14 feb 2026', titulo: `Un joven alcalde de 28 años de Guadalajara estalla en Bruselas: "Es el mundo al revés"`, url: 'https://www.elespanol.com/eldigitalcastillalamancha/region/guadalajara/20260214/joven-alcalde-anos-guadalajara-estalla-bruselas-mundo-reves-asfixian-burocracia-trt/1003744130549_0.html', imagen: prElespanolBruselas },
+  { medio: 'elDiario.es', fecha: '5 oct 2025', titulo: `Kike Collada: "El reto no es poner bancos, sino si el pueblo existirá en diez años"`, url: 'https://www.eldiario.es/castilla-la-mancha/provincias/guadalajara/kike-collada-alcalde-veinteanero-guadalajara-reto-no-poner-bancos-si-pueblo-existira-diez-anos_1_12652865.html', imagen: prEldiarioKike },
+  { medio: 'Xataka', fecha: '2 jun 2024', titulo: 'Kike Collada, el alcalde veinteañero y tiktoker de la España vaciada', url: 'https://www.xataka.com/magnet/mi-pueblo-veo-monton-recursos-esperando-a-ser-aprovechados-kike-collada-alcalde-veinteanero-municipio-71-vecinos', imagen: prXatakaKike },
+  { medio: 'Infobae', fecha: '27 oct 2024', titulo: 'Enrique Collada, el alcalde veinteañero de El Recuenco que triunfa en TikTok', url: 'https://www.infobae.com/espana/agencias/2024/10/20/enrique-collada-el-alcalde-veinteanero-de-el-recuenco-guadalajara-que-triunfa-en-tiktok/', imagen: null },
+  { medio: 'Rewilding Europe', fecha: 'ene 2026', titulo: 'European bison arrive in the Iberian Highlands for the first time', url: 'https://rewildingeurope.com/news/european-bison-arrive-in-the-iberian-highlands-for-the-first-time/', imagen: prRewildingBisontes },
+  { medio: 'Nueva Alcarria', fecha: '11 dic 2025', titulo: 'El Alto Tajo tendrá en 2026 un resort ecológico de 32 cabañas', url: 'https://nuevaalcarria.com/articulos/el-alto-tajo-tendra-en-2026-un-resort-ecologico-de-32-cabanas', imagen: prNuevaAlcarriaResort },
+  { medio: 'Vivir Ediciones', fecha: '14 ago 2025', titulo: 'El Recuenco, en el Alto Tajo, o cómo frenar la despoblación atrayendo nuevas familias', url: 'https://vivirediciones.es/destacado/el-recuenco-en-el-alto-tajo-o-como-frenar-la-despoblacion-atrayendo-nuevas-familias/', imagen: null },
+  { medio: 'El Decano de Guadalajara', fecha: '23 ago 2025', titulo: 'Nace Recuenco Vive, un festival para celebrar la vida rural en el corazón del Alto Tajo', url: 'https://eldecanodeguadalajara.com/index.php/news/14648/nace-recuenco-vive-un-festival-para-celebrar-la-vida-rural-en-el-coraz%C3%B3n-del-alto-tajo/', imagen: prDecanoRecuencoVive },
+  { medio: 'El Decano de Guadalajara', fecha: '12 may 2025', titulo: 'El Recuenco acogerá la presentación de los proyectos Compte Bosque Innova en el Alto Tajo', url: 'https://eldecanodeguadalajara.com/index.php/news/12987/el-recuenco-acoger%C3%A1-la-presentaci%C3%B3n-de-los-proyectos-a-desarrollar-con-la-convocatoria-compte-bosque-innova-en-el-alto-tajo/', imagen: prDecanoBosqueInnova },
+];
+
+const servicios = [
+  'Consultorio médico',
+  'Farmacia',
+  'Bar',
+  'Tienda',
+];
+
+const ctaItems = [
+  'Naturaleza y calidad de vida',
+  'Visibilidad mediática nacional e internacional',
+  'Comunidad activa y acogedora',
+  'Proyectos innovadores en marcha',
+];
+
+const videos = [
+  { id: '9BeW6QAKJy0', titulo: 'Los bisontes europeos de El Recuenco', medio: 'Castilla-La Mancha Media' },
+  { id: '2YG80fzILW8', titulo: 'Proyecto de repoblación en El Recuenco', medio: 'Castilla-La Mancha Media' },
+  { id: 'aEuKunbWE0g', titulo: 'El Ayuntamiento de El Recuenco reparte lotes de leña para sus vecinos', medio: 'Castilla-La Mancha Media' },
+  { id: 'x06Hmy8SqOM', titulo: '¿Cómo es ser alcalde con 26 años?', medio: 'ABC' },
+  { id: '4WKiWUCJZMM', titulo: 'Discurso del mejor político del año', medio: 'Nueva Alcarria' },
+];
+
+const galeriaImages = [
+  { src: heroPueblo, alt: 'Vista panorámica del pueblo desde lo alto' },
+  { src: imgBisonte1, alt: 'Bisonte europeo en El Recuenco' },
+  { src: imgBisonte2, alt: 'Bisonte europeo en el monte' },
+  { src: imgCabra, alt: 'Cabra montesa en los alrededores' },
+  { src: imgCorraliza, alt: 'Paraje de la Corraliza y la Atalaya' },
+  { src: imgCeno, alt: 'Paraje de El Ceño' },
+  { src: imgCorzos, alt: 'Paraje de Los Corzos' },
+  { src: imgPueblo2, alt: 'Vista del pueblo y su entorno natural' },
+  { src: imgErmitaFrontal, alt: 'Ermita de la Virgen de la Bienvenida' },
+  { src: imgErmitaInterior, alt: 'Interior de la Ermita' },
+  { src: imgErmitaLateral, alt: 'Vista lateral de la Ermita' },
+  { src: imgCasaConsistorial, alt: 'Casa Consistorial de El Recuenco' },
+  { src: imgIglesia, alt: 'Iglesia y monumento a los vidrieros' },
+];
+---
+
+<BaseLayout title="El Recuenco — Un pueblo con futuro" ogImage={ogImageUrl}>
+
+  <Nav currentPage="inicio" />
+
+  <!-- ========== 1. HERO ========== -->
+  <header id="inicio" class="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
+    <!-- Video de fondo (YouTube) — solo en desktop para no penalizar datos/batería en móvil -->
+    <div class="absolute inset-0 pointer-events-none hidden md:block" style="overflow:hidden;">
+      <iframe
+        src="https://www.youtube.com/embed/PyqgEwd-hTI?autoplay=1&mute=1&loop=1&playlist=PyqgEwd-hTI&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&vq=hd1080"
+        title="Vídeo de El Recuenco"
+        class="absolute top-1/2 left-1/2 w-[177.78vh] min-w-full min-h-full -translate-x-1/2 -translate-y-1/2"
+        style="aspect-ratio:16/9; border:0;"
+        allow="autoplay; encrypted-media"
+        loading="eager"
+      ></iframe>
+    </div>
+    <!-- Imagen de respaldo para móvil / carga lenta -->
+    <Image
+      src={heroPueblo}
+      alt="Vista panorámica de El Recuenco"
+      widths={[640, 1024, 1920]}
+      sizes="100vw"
+      class="absolute inset-0 w-full h-full object-cover hero-fallback-img"
+      loading="eager"
+      fetchpriority="high"
+    />
+    <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-black/60 z-[1]"></div>
+
+    <div class="relative z-10 text-center px-5 sm:px-6 max-w-4xl">
+      <p class="text-blanco/60 text-xs sm:text-sm font-semibold tracking-[0.2em] sm:tracking-[0.3em] uppercase mb-4 sm:mb-6 reveal">Guadalajara · Castilla-La Mancha</p>
+      <h1 class="text-blanco text-[clamp(2rem,7vw,5rem)] font-extrabold leading-[1.08] tracking-tight mb-5 sm:mb-6 reveal reveal-delay-1">
+        Un pueblo pequeño<br>haciendo cosas grandes
+      </h1>
+      <a href="#vivir" class="inline-flex items-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 bg-blanco text-texto no-underline rounded-full font-semibold text-sm tracking-wide hover:bg-piedra-claro hover:scale-105 transition-all duration-300 reveal reveal-delay-3">
+        Descubre qué está pasando aquí
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+      </a>
+    </div>
+
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50 z-10">
+      <div class="w-[1px] h-12 bg-gradient-to-b from-transparent to-white/60"></div>
+    </div>
+  </header>
+
+  <!-- ========== 2. VIVIR AQUÍ ========== -->
+  <section id="vivir" class="py-16 md:py-24 lg:py-32 bg-piedra-claro">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-10 md:mb-16 reveal">
+        <p class="text-tierra font-semibold text-sm tracking-[0.2em] uppercase mb-3">Un lugar para vivir</p>
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4">El Recuenco<br>tiene sitio para ti</h2>
+        <p class="text-texto-claro text-lg max-w-xl mx-auto">No somos un museo. Somos un pueblo que busca gente con ganas de vivir, emprender y formar parte de algo real.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-10 md:mb-12">
+        <!-- Familias -->
+        <div class="bg-blanco rounded-2xl p-6 sm:p-8 shadow-sm hover:shadow-md transition-shadow reveal reveal-delay-1">
+          <div class="w-12 h-12 bg-verde/10 rounded-xl flex items-center justify-center mb-5">
+            <svg class="w-6 h-6 text-verde" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>
+          </div>
+          <h3 class="text-xl font-bold mb-3">Para familias</h3>
+          <p class="text-texto-claro leading-relaxed mb-4">Cría a tus hijos con monte, aire limpio, comunidad de verdad y la seguridad de un pueblo donde todos se conocen. Colegio e instituto en Priego, a solo 20 minutos con transporte escolar que recoge y lleva a los niños.</p>
+        </div>
+
+        <!-- Emprendedores -->
+        <div class="bg-blanco rounded-2xl p-6 sm:p-8 shadow-sm hover:shadow-md transition-shadow reveal reveal-delay-2">
+          <div class="w-12 h-12 bg-tierra/10 rounded-xl flex items-center justify-center mb-5">
+            <svg class="w-6 h-6 text-tierra" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5m.75-9l3-3 2.148 2.148A12.061 12.061 0 0116.5 7.605"/></svg>
+          </div>
+          <h3 class="text-xl font-bold mb-3">Para emprendedores</h3>
+          <p class="text-texto-claro leading-relaxed mb-4">Turismo rural, hostelería, teletrabajo, artesanía, sector agroalimentario... Un pueblo que sale en medios nacionales e internacionales cada mes. Una oportunidad en un sitio que siempre está dando que hablar.</p>
+        </div>
+
+        <!-- Amantes de la naturaleza -->
+        <div class="bg-blanco rounded-2xl p-6 sm:p-8 shadow-sm hover:shadow-md transition-shadow reveal reveal-delay-3">
+          <div class="w-12 h-12 bg-verde-oscuro/10 rounded-xl flex items-center justify-center mb-5">
+            <svg class="w-6 h-6 text-verde-oscuro" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"/></svg>
+          </div>
+          <h3 class="text-xl font-bold mb-3">Para amantes de la naturaleza</h3>
+          <p class="text-texto-claro leading-relaxed mb-4">Bosques inmensos, miradores, fauna salvaje, setas, trufa, senderos, rutas en bicicleta, mimbre... A los pies del Parque Natural del Alto Tajo. El paraíso si amas la vida al aire libre.</p>
+        </div>
+      </div>
+
+      <!-- Servicios y datos prácticos -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+        <div class="bg-blanco rounded-2xl p-6 md:p-10 shadow-sm reveal">
+          <h3 class="text-lg font-bold mb-6">Servicios en el pueblo</h3>
+          <div class="grid grid-cols-2 gap-4">
+            {servicios.map(servicio => (
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-verde/10 rounded-lg flex items-center justify-center shrink-0">
+                  <svg class="w-4 h-4 text-verde" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+                </div>
+                <span class="text-sm text-texto">{servicio}</span>
+              </div>
+            ))}
+            <div class="flex items-center gap-3 col-span-2">
+              <div class="w-8 h-8 bg-verde/10 rounded-lg flex items-center justify-center shrink-0">
+                <svg class="w-4 h-4 text-verde" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+              </div>
+              <span class="text-sm text-texto">Colegio e instituto en Priego (22 km, 20 min con transporte escolar)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-blanco rounded-2xl p-6 md:p-10 shadow-sm reveal reveal-delay-1">
+          <h3 class="text-lg font-bold mb-6">Datos prácticos</h3>
+          <div class="grid grid-cols-2 gap-6">
+            <div>
+              <span class="block text-2xl font-bold text-verde-oscuro">160 km</span>
+              <span class="text-texto-claro text-sm">de Madrid (A-2)</span>
+            </div>
+            <div>
+              <span class="block text-2xl font-bold text-verde-oscuro">1.100 m</span>
+              <span class="text-texto-claro text-sm">de altitud</span>
+            </div>
+            <div>
+              <span class="block text-2xl font-bold text-verde-oscuro">80</span>
+              <span class="text-texto-claro text-sm">habitantes</span>
+            </div>
+            <div>
+              <span class="block text-2xl font-bold text-verde-oscuro">Alto Tajo</span>
+              <span class="text-texto-claro text-sm">Parque Natural a pie</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 3. QUIÉNES SOMOS ========== -->
+  <section id="pueblo" class="py-16 md:py-24 lg:py-32">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20 items-start">
+
+        <!-- Texto -->
+        <div class="reveal">
+          <p class="text-tierra font-semibold text-sm tracking-[0.2em] uppercase mb-3">Nuestras raíces</p>
+          <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-6 leading-tight">Un pueblo con<br>raíces profundas</h2>
+          <div class="section-line mb-8"></div>
+
+          <div class="space-y-5 text-texto-claro text-[1.05rem] leading-relaxed">
+            <p>
+              El Recuenco fue durante siglos un importante <strong class="text-texto font-semibold">centro de producción de vidrio</strong>.
+              Sus hornos abastecieron al mismísimo <strong class="text-texto font-semibold">Monasterio de El Escorial</strong> por orden de Felipe II.
+            </p>
+            <p>
+              Hoy ese espíritu sigue vivo gracias a unas <strong class="text-texto font-semibold">asociaciones muy activas</strong> que trabajan conjuntamente con el Ayuntamiento para mantener vivas las tradiciones y festividades durante todo el año.
+            </p>
+            <p>
+              Las fiestas patronales de <strong class="text-texto font-semibold">San Antonio</strong> (13 de junio) y la <strong class="text-texto font-semibold">Virgen de la Bienvenida</strong> (8 de septiembre), la Fiesta de la Juventud, los carnavales, las jornadas micológicas... Un pueblo de 80 habitantes con más vida cultural que muchas ciudades.
+            </p>
+          </div>
+
+          <p class="mt-8 text-lg font-semibold text-verde-oscuro italic">
+            "Nuestro pasado nos da fuerza. Nuestro presente nos da orgullo."
+          </p>
+        </div>
+
+        <!-- Fotos patrimonio -->
+        <div class="reveal reveal-delay-1">
+          <div class="grid grid-cols-2 gap-3">
+            <div class="relative overflow-hidden rounded-xl aspect-[3/4]">
+              <Image src={imgIglesia} alt="Iglesia y monumento a los vidrieros" widths={[300, 600]} sizes="(max-width: 1024px) 50vw, 25vw" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+            </div>
+            <div class="relative overflow-hidden rounded-xl aspect-[3/4]">
+              <Image src={imgErmitaFrontal} alt="Ermita de la Virgen de la Bienvenida" widths={[300, 600]} sizes="(max-width: 1024px) 50vw, 25vw" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+            </div>
+            <div class="relative overflow-hidden rounded-xl aspect-[3/4]">
+              <Image src={imgCasaConsistorial} alt="Casa Consistorial" widths={[300, 600]} sizes="(max-width: 1024px) 50vw, 25vw" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+            </div>
+            <div class="relative overflow-hidden rounded-xl aspect-[3/4]">
+              <Image src={imgErmitaInterior} alt="Interior de la Ermita" widths={[300, 600]} sizes="(max-width: 1024px) 50vw, 25vw" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 4. ESPAÑA RURAL (contexto) ========== -->
+  <section id="manifiesto" class="py-16 md:py-24 lg:py-32 bg-texto text-blanco">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <div class="reveal">
+        <p class="text-tierra-claro font-semibold text-sm tracking-[0.2em] uppercase mb-8">La España rural</p>
+        <h2 class="text-2xl md:text-4xl lg:text-5xl font-bold leading-tight mb-8 md:mb-10">
+          3.403 municipios españoles<br class="hidden md:block"> en riesgo de desaparecer.
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-3 gap-2 sm:gap-8 mb-10 md:mb-12 reveal reveal-delay-1">
+        <div class="p-3 sm:p-6">
+          <span class="block text-3xl sm:text-5xl md:text-6xl font-extrabold text-tierra-claro mb-2">42%</span>
+          <span class="text-blanco/60 text-[11px] sm:text-sm leading-snug">de los municipios en riesgo, según el Banco de España</span>
+        </div>
+        <div class="p-3 sm:p-6">
+          <span class="block text-3xl sm:text-5xl md:text-6xl font-extrabold text-tierra-claro mb-2">63%</span>
+          <span class="text-blanco/60 text-[11px] sm:text-sm leading-snug">de los municipios han perdido habitantes desde el año 2000</span>
+        </div>
+        <div class="p-3 sm:p-6">
+          <span class="block text-3xl sm:text-5xl md:text-6xl font-extrabold text-tierra-claro mb-2">+31%</span>
+          <span class="text-blanco/60 text-[11px] sm:text-sm leading-snug">crecimiento de El Recuenco en los últimos cuatro años</span>
+        </div>
+      </div>
+
+      <div class="reveal reveal-delay-2">
+        <div class="w-16 h-[1px] bg-blanco/20 mx-auto mb-8"></div>
+        <p class="text-lg md:text-2xl font-light text-blanco/90 leading-relaxed max-w-2xl mx-auto">
+          En El Recuenco decidimos que eso no iba con nosotros.<br>
+          <strong class="text-blanco font-semibold">De 61 a 80 vecinos en cuatro años.</strong>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5. GALERÍA ========== -->
+  <section id="galeria" class="py-16 md:py-24 lg:py-32 bg-piedra-claro">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-10 md:mb-16 reveal">
+        <p class="text-tierra font-semibold text-sm tracking-[0.2em] uppercase mb-3">Imágenes</p>
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4">Galería</h2>
+        <p class="text-texto-claro text-lg max-w-md mx-auto">El Recuenco, su patrimonio y su entorno natural</p>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <Gallery images={galeriaImages} columns={3} />
+      </div>
+
+      <div class="text-center mt-8 sm:mt-12 reveal reveal-delay-2">
+        <a href={`${base}rutas/`} class="inline-flex items-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 bg-verde-oscuro text-blanco no-underline rounded-full font-semibold text-sm tracking-wide hover:bg-verde hover:scale-105 transition-all duration-300">
+          Descubre nuestras rutas
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 6. VÍDEOS ========== -->
+  <section id="videos" class="py-16 md:py-24 lg:py-32">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-10 md:mb-16 reveal">
+        <p class="text-tierra font-semibold text-sm tracking-[0.2em] uppercase mb-3">En vídeo</p>
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4">El Recuenco en los medios</h2>
+        <p class="text-texto-claro text-lg max-w-lg mx-auto">Reportajes y noticias sobre El Recuenco en televisión</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 reveal reveal-delay-1">
+        {videos.map((video, i) => (
+          <div class:list={['bg-blanco rounded-2xl shadow-sm overflow-hidden hover:shadow-md transition-shadow', i >= 3 && 'video-extra hidden md:block']}>
+            <div class="yt-facade relative aspect-video cursor-pointer group" data-videoid={video.id}>
+              <img
+                src={`https://i.ytimg.com/vi/${video.id}/hqdefault.jpg`}
+                alt={video.titulo}
+                loading="lazy"
+                class="absolute inset-0 w-full h-full object-cover"
+              />
+              <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+                <div class="w-14 h-14 sm:w-16 sm:h-16 bg-red-600 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                  <svg class="w-6 h-6 sm:w-7 sm:h-7 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+              </div>
+            </div>
+            <div class="p-3 sm:p-4">
+              <span class="text-xs font-semibold text-tierra-oscuro bg-tierra/10 px-2.5 py-1 rounded-full">{video.medio}</span>
+              <h3 class="text-sm font-bold text-texto mt-2 leading-snug">{video.titulo}</h3>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div class="text-center mt-6 md:hidden">
+        <button id="videos-toggle" class="inline-flex items-center gap-2 px-6 py-3 bg-piedra text-texto no-underline rounded-full font-semibold text-sm hover:bg-piedra-oscuro/30 transition-colors border-0 cursor-pointer">
+          Ver más vídeos
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 7. EN PRENSA ========== -->
+  <section id="prensa" class="py-16 md:py-24 lg:py-32">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-10 md:mb-16 reveal">
+        <p class="text-tierra font-semibold text-sm tracking-[0.2em] uppercase mb-3">Hablan de nosotros</p>
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4">En prensa</h2>
+        <p class="text-texto-claro text-lg max-w-lg mx-auto">Lo que dicen los medios sobre El Recuenco y sus proyectos</p>
+      </div>
+
+      <div id="prensa-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+        {articulos.map((art, i) => (
+          <a href={art.url} target="_blank" rel="noopener noreferrer" class:list={['group bg-piedra-claro rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all hover:-translate-y-1 no-underline flex flex-col', i >= 6 && 'prensa-extra hidden sm:flex']}>
+            {art.imagen ? (
+              <div class="aspect-[16/9] overflow-hidden bg-piedra">
+                <Image src={art.imagen} alt="" widths={[320, 480]} sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+              </div>
+            ) : (
+              <div class="aspect-[16/9] bg-gradient-to-br from-verde-oscuro/20 to-tierra/20 flex items-center justify-center">
+                <svg class="w-10 h-10 text-tierra/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z"/></svg>
+              </div>
+            )}
+            <div class="p-4 sm:p-5 flex flex-col flex-1">
+              <div class="flex items-center gap-2 mb-3">
+                <span class="text-xs font-semibold text-tierra-oscuro bg-tierra/10 px-2.5 py-1 rounded-full">{art.medio}</span>
+                <span class="text-xs text-texto-claro">{art.fecha}</span>
+              </div>
+              <h3 class="text-base font-bold text-texto leading-snug mb-3 group-hover:text-verde-oscuro transition-colors flex-1">{art.titulo}</h3>
+              <span class="text-xs text-tierra font-medium group-hover:underline">Leer artículo &rarr;</span>
+            </div>
+          </a>
+        ))}
+      </div>
+      <div class="text-center mt-6 sm:hidden">
+        <button id="prensa-toggle" class="inline-flex items-center gap-2 px-6 py-3 bg-piedra text-texto no-underline rounded-full font-semibold text-sm hover:bg-piedra-oscuro/30 transition-colors border-0 cursor-pointer">
+          Ver más artículos
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 7. CONTACTO ========== -->
+  <section id="contacto" class="py-16 md:py-24 lg:py-32 bg-piedra-claro">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-10 md:mb-16 reveal">
+        <p class="text-tierra font-semibold text-sm tracking-[0.2em] uppercase mb-3">Da el paso</p>
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4">¿Quieres saber más?</h2>
+        <p class="text-texto-claro text-lg max-w-lg mx-auto">Si estás pensando en venir, emprender o simplemente quieres conocernos, escríbenos. Aquí no sobra nadie.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
+        <!-- Info -->
+        <div class="bg-blanco rounded-2xl p-6 sm:p-8 reveal reveal-delay-1">
+          <h3 class="text-xl font-bold mb-6">Ayuntamiento de El Recuenco</h3>
+
+          <div class="space-y-5">
+            <div class="flex gap-4 items-start">
+              <div class="w-10 h-10 bg-piedra-claro rounded-xl flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5 text-verde-oscuro" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
+              </div>
+              <div>
+                <span class="block text-sm font-semibold mb-0.5">Dirección</span>
+                <span class="text-texto-claro text-sm">Plaza de Nuestra Señora de la Bienvenida, 7<br>19430 El Recuenco, Guadalajara</span>
+              </div>
+            </div>
+
+            <div class="flex gap-4 items-start">
+              <div class="w-10 h-10 bg-piedra-claro rounded-xl flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5 text-verde-oscuro" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
+              </div>
+              <div>
+                <span class="block text-sm font-semibold mb-0.5">Email</span>
+                <a href="mailto:secretaria.aytoelrecuenco@gmail.com" class="text-tierra text-sm no-underline hover:underline">secretaria.aytoelrecuenco@gmail.com</a>
+              </div>
+            </div>
+
+            <div class="flex gap-4 items-start">
+              <div class="w-10 h-10 bg-piedra-claro rounded-xl flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5 text-verde-oscuro" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25A2.25 2.25 0 015.25 3h13.5A2.25 2.25 0 0121 5.25z"/></svg>
+              </div>
+              <div>
+                <span class="block text-sm font-semibold mb-0.5">Sede electrónica</span>
+                <a href="https://elrecuenco.sedelectronica.es/info.0" target="_blank" rel="noopener noreferrer" class="text-tierra text-sm no-underline hover:underline">Trámites online &rarr;</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mancomunidad Alto Tajo -->
+        <div class="bg-blanco rounded-2xl p-6 sm:p-8 flex flex-col reveal reveal-delay-2">
+          <div class="w-12 h-12 bg-verde/10 rounded-xl flex items-center justify-center mb-5">
+            <svg class="w-6 h-6 text-verde" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"/></svg>
+          </div>
+          <h3 class="text-xl font-bold mb-3">Mancomunidad Alto Tajo</h3>
+          <p class="text-texto-claro text-sm leading-relaxed mb-5 flex-1">
+            Formamos parte de la <strong class="text-texto font-semibold">Mancomunidad de Municipios del Alto Tajo</strong>, donde compartimos servicios como recogida de residuos, arquitecto municipal, gestión forestal y tienda de reparto. Pueblos unidos con una hoja de ruta común: el <strong class="text-texto font-semibold">Plan de Acción Local de la Agenda Urbana</strong>.
+          </p>
+          <a href="https://pueblosaltotajo.es" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 w-full px-6 py-3.5 bg-verde/10 text-verde-oscuro no-underline rounded-xl font-semibold text-sm hover:bg-verde/20 transition-colors">
+            Visitar pueblosaltotajo.es
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+          </a>
+        </div>
+
+        <!-- CTA final -->
+        <div class="bg-verde-oscuro text-blanco rounded-2xl p-6 sm:p-8 flex flex-col justify-between reveal reveal-delay-3">
+          <div>
+            <h3 class="text-2xl font-bold mb-4 leading-tight">El Recuenco tiene<br>sitio para ti</h3>
+            <p class="text-blanco/70 leading-relaxed mb-6">
+              Estamos buscando familias, emprendedores y personas que quieran ser parte de una comunidad que apuesta por su futuro. Si tienes una idea, un proyecto o simplemente curiosidad, hablemos.
+            </p>
+            <ul class="space-y-3 text-blanco/80 text-sm mb-8">
+              {ctaItems.map(item => (
+                <li class="flex items-center gap-2">
+                  <svg class="w-4 h-4 text-verde-claro shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <a href="mailto:secretaria.aytoelrecuenco@gmail.com" class="inline-flex items-center justify-center gap-2 w-full px-6 py-4 bg-blanco text-verde-oscuro no-underline rounded-xl font-semibold text-sm hover:bg-piedra-claro transition-colors">
+            Escríbenos
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+
+  <!-- "Ver más" toggles for mobile -->
+  <script>
+    function setupToggle(btnId: string, itemClass: string) {
+      const btn = document.getElementById(btnId);
+      if (!btn) return;
+      btn.addEventListener('click', () => {
+        document.querySelectorAll(`.${itemClass}`).forEach(el => el.classList.remove('hidden'));
+        btn.remove();
+      });
+    }
+    setupToggle('prensa-toggle', 'prensa-extra');
+    setupToggle('videos-toggle', 'video-extra');
+  </script>
+
+  <!-- YouTube facade: load iframe on tap -->
+  <script>
+    document.querySelectorAll('.yt-facade').forEach(el => {
+      el.addEventListener('click', () => {
+        const id = (el as HTMLElement).dataset.videoid;
+        if (!id) return;
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1`;
+        iframe.title = el.querySelector('img')?.alt || '';
+        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+        iframe.allowFullscreen = true;
+        iframe.className = 'absolute inset-0 w-full h-full';
+        iframe.style.border = '0';
+        el.innerHTML = '';
+        el.appendChild(iframe);
+        el.classList.remove('cursor-pointer');
+      });
+    });
+  </script>
+
+  <!-- Active nav link highlighting (specific to index page) -->
+  <script>
+    const sections = document.querySelectorAll('section[id], header[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    function updateActiveLink() {
+      let current = '';
+      sections.forEach(section => {
+        const rect = section.getBoundingClientRect();
+        if (rect.top <= 120) {
+          current = section.getAttribute('id') || '';
+        }
+      });
+
+      navLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        if (href === `#${current}`) {
+          link.classList.add('!text-blanco', 'bg-white/10');
+        } else {
+          link.classList.remove('!text-blanco', 'bg-white/10');
+        }
+      });
+    }
+
+    window.addEventListener('scroll', updateActiveLink, { passive: true });
+    updateActiveLink();
+  </script>
+</BaseLayout>

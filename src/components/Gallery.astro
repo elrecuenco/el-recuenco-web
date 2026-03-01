@@ -1,0 +1,169 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface GalleryImage {
+  src: ImageMetadata;
+  alt: string;
+}
+
+interface Props {
+  images: GalleryImage[];
+  columns?: 2 | 3 | 4;
+}
+
+const { images, columns = 3 } = Astro.props;
+
+const gridClass = {
+  2: 'grid-cols-1 sm:grid-cols-2',
+  3: 'grid-cols-2 sm:grid-cols-3',
+  4: 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4',
+}[columns];
+---
+
+<div class={`grid ${gridClass} gap-2 sm:gap-3`}>
+  {images.map((img, index) => (
+    <button
+      class="gallery-thumb group relative overflow-hidden rounded-xl cursor-pointer border-0 p-0 bg-transparent aspect-square"
+      data-index={index}
+      aria-label={`Ver imagen: ${img.alt}`}
+    >
+      <Image
+        src={img.src}
+        alt={img.alt}
+        widths={[320, 640, 1200]}
+        sizes="(max-width: 640px) 50vw, 33vw"
+        class="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
+      />
+      <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 flex items-center justify-center">
+        <svg class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-lg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607zM10.5 7.5v6m3-3h-6" />
+        </svg>
+      </div>
+    </button>
+  ))}
+</div>
+
+<!-- Lightbox (z-[60] to sit above the nav z-50) -->
+<div id="lightbox" class="fixed inset-0 z-[60] hidden flex-col bg-black/95 backdrop-blur-sm" role="dialog" aria-modal="true" aria-label="Visor de imágenes">
+  <!-- Top bar with close button -->
+  <div class="flex-none flex justify-end p-3 sm:p-4">
+    <button id="lightbox-close" class="w-11 h-11 flex items-center justify-center text-white/70 hover:text-white transition-colors bg-white/10 hover:bg-white/20 rounded-full border-0 cursor-pointer backdrop-blur-sm" aria-label="Cerrar visor">
+      <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <!-- Image area (fills remaining space, centers image) -->
+  <div class="flex-1 flex items-center justify-center px-3 sm:px-14 md:px-20 pb-4 min-h-0">
+    <img id="lightbox-img" src="" alt="" class="max-w-full max-h-full object-contain rounded-lg select-none" draggable="false" />
+  </div>
+  <!-- Navigation arrows -->
+  <button id="lightbox-prev" class="absolute left-1 sm:left-3 md:left-5 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-11 sm:h-11 flex items-center justify-center text-white/70 hover:text-white transition-colors bg-white/10 hover:bg-white/20 rounded-full border-0 cursor-pointer backdrop-blur-sm" aria-label="Imagen anterior">
+    <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
+  </button>
+  <button id="lightbox-next" class="absolute right-1 sm:right-3 md:right-5 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-11 sm:h-11 flex items-center justify-center text-white/70 hover:text-white transition-colors bg-white/10 hover:bg-white/20 rounded-full border-0 cursor-pointer backdrop-blur-sm" aria-label="Imagen siguiente">
+    <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
+  </button>
+  <!-- Caption bar -->
+  <div class="flex-none flex items-center justify-center gap-2 sm:gap-3 px-4 pb-4 sm:pb-5">
+    <p id="lightbox-caption" class="text-white/80 text-xs sm:text-sm bg-black/40 backdrop-blur-sm px-4 sm:px-5 py-1.5 sm:py-2 rounded-full text-center leading-snug"></p>
+    <span id="lightbox-counter" class="text-white/40 text-[10px] sm:text-xs shrink-0"></span>
+  </div>
+</div>
+
+<script>
+  const thumbs = document.querySelectorAll('.gallery-thumb');
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
+  const lightboxCaption = document.getElementById('lightbox-caption');
+  const lightboxCounter = document.getElementById('lightbox-counter');
+  const closeBtn = document.getElementById('lightbox-close');
+  const prevBtn = document.getElementById('lightbox-prev');
+  const nextBtn = document.getElementById('lightbox-next');
+
+  if (lightbox && lightboxImg && lightboxCaption && lightboxCounter && closeBtn && prevBtn && nextBtn) {
+    const images: { src: string; alt: string }[] = [];
+    let currentIndex = 0;
+
+    // Extract the largest available src from srcset for each thumbnail
+    thumbs.forEach((thumb) => {
+      const img = thumb.querySelector('img');
+      if (img) {
+        let bestSrc = img.currentSrc || img.src;
+        const srcset = img.getAttribute('srcset');
+        if (srcset) {
+          // Parse srcset and pick the largest width
+          let maxWidth = 0;
+          srcset.split(',').forEach(entry => {
+            const parts = entry.trim().split(/\s+/);
+            const w = parseInt(parts[1]);
+            if (w > maxWidth) {
+              maxWidth = w;
+              bestSrc = parts[0];
+            }
+          });
+        }
+        images.push({ src: bestSrc, alt: img.alt });
+      }
+    });
+
+    function showImage(index: number) {
+      currentIndex = (index + images.length) % images.length;
+      lightboxImg.src = images[currentIndex].src;
+      lightboxImg.alt = images[currentIndex].alt;
+      lightboxCaption!.textContent = images[currentIndex].alt;
+      lightboxCounter!.textContent = `${currentIndex + 1} / ${images.length}`;
+    }
+
+    function openLightbox(index: number) {
+      showImage(index);
+      lightbox!.classList.remove('hidden');
+      lightbox!.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+      // Ensure the page scroll position doesn't cause issues with fixed positioning
+      lightbox!.scrollTop = 0;
+    }
+
+    function closeLightbox() {
+      lightbox!.classList.add('hidden');
+      lightbox!.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    thumbs.forEach((thumb, i) => {
+      thumb.addEventListener('click', () => openLightbox(i));
+    });
+
+    closeBtn.addEventListener('click', closeLightbox);
+    prevBtn.addEventListener('click', (e) => { e.stopPropagation(); showImage(currentIndex - 1); });
+    nextBtn.addEventListener('click', (e) => { e.stopPropagation(); showImage(currentIndex + 1); });
+
+    // Close when clicking anywhere on the backdrop (not on buttons or image)
+    lightbox.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      if (target === lightbox || target === lightboxImg) {
+        closeLightbox();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (lightbox.classList.contains('hidden')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') showImage(currentIndex - 1);
+      if (e.key === 'ArrowRight') showImage(currentIndex + 1);
+    });
+
+    // Touch swipe support for mobile
+    let touchStartX = 0;
+    lightbox.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    lightbox.addEventListener('touchend', (e) => {
+      const diff = e.changedTouches[0].screenX - touchStartX;
+      if (Math.abs(diff) > 50) {
+        if (diff > 0) showImage(currentIndex - 1);
+        else showImage(currentIndex + 1);
+      }
+    }, { passive: true });
+  }
+</script>

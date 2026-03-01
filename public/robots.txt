@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://elrecuenco.github.io/el-recuenco/sitemap.xml

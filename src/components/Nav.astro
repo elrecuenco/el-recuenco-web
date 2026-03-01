@@ -1,0 +1,121 @@
+---
+interface Props {
+  currentPage?: 'inicio' | 'rutas';
+}
+
+const { currentPage = 'inicio' } = Astro.props;
+const base = import.meta.env.BASE_URL;
+
+const links = [
+  { href: `${base}`, label: 'Inicio', anchor: '#inicio' },
+  { href: `${base}#vivir`, label: 'Vivir aquí', anchor: '#vivir' },
+  { href: `${base}#pueblo`, label: 'El pueblo', anchor: '#pueblo' },
+  { href: `${base}#galeria`, label: 'Galería', anchor: '#galeria' },
+  { href: `${base}#videos`, label: 'Vídeos', anchor: '#videos' },
+  { href: `${base}rutas/`, label: 'Rutas', page: 'rutas' },
+  { href: `${base}#prensa`, label: 'Prensa', anchor: '#prensa' },
+  { href: `${base}#contacto`, label: 'Contacto', anchor: '#contacto' },
+];
+---
+
+<nav id="nav" class:list={[
+  "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
+  currentPage !== 'inicio' && "bg-verde-oscuro/95 backdrop-blur-md shadow-sm"
+]} data-scrollable={currentPage === 'inicio'}>
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16 sm:h-20">
+    <a href={base} class="text-blanco text-base sm:text-lg font-bold tracking-tight no-underline hover:opacity-80 transition-opacity">
+      El Recuenco
+    </a>
+
+    <button id="nav-toggle" class="md:hidden flex flex-col gap-[5px] bg-transparent border-none cursor-pointer p-2" aria-label="Abrir menú">
+      <span class="nav-line w-6 h-[2px] bg-blanco rounded-full transition-all duration-300 origin-center"></span>
+      <span class="nav-line w-6 h-[2px] bg-blanco rounded-full transition-all duration-300"></span>
+      <span class="nav-line w-6 h-[2px] bg-blanco rounded-full transition-all duration-300 origin-center"></span>
+    </button>
+
+    <ul id="nav-menu" class="hidden md:flex list-none gap-1 items-center">
+      {links.map(link => (
+        link.page === currentPage ? (
+          <li><span class="text-blanco no-underline px-4 py-2 rounded-full text-sm font-medium bg-white/15">{link.label}</span></li>
+        ) : (
+          <li><a href={currentPage === 'inicio' && link.anchor ? link.anchor : link.href} class="nav-link text-blanco/80 no-underline px-4 py-2 rounded-full text-sm font-medium hover:text-blanco hover:bg-white/10 transition-all">{link.label}</a></li>
+        )
+      ))}
+    </ul>
+  </div>
+
+  <div id="mobile-menu" class="hidden md:hidden overflow-hidden transition-all duration-300">
+    <div class="px-4 pb-5 pt-1 flex flex-col gap-0.5">
+      {links.map(link => (
+        link.page === currentPage ? (
+          <span class="text-blanco no-underline py-3 px-4 rounded-xl text-sm font-medium bg-white/15">{link.label}</span>
+        ) : (
+          <a href={currentPage === 'inicio' && link.anchor ? link.anchor : link.href} class="mobile-link text-blanco/90 no-underline py-3 px-4 rounded-xl text-sm font-medium hover:bg-white/10 transition-all">{link.label}</a>
+        )
+      ))}
+    </div>
+  </div>
+</nav>
+
+<script>
+  const nav = document.getElementById('nav');
+  const navToggle = document.getElementById('nav-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  // Scroll effect (transparent → opaque)
+  function updateNav() {
+    if (!nav) return;
+    if (window.scrollY > 60) {
+      nav.style.background = 'rgba(26, 26, 26, 0.85)';
+      nav.style.backdropFilter = 'blur(20px)';
+      nav.style.webkitBackdropFilter = 'blur(20px)';
+      nav.style.boxShadow = '0 1px 0 rgba(255,255,255,0.05)';
+    } else {
+      nav.style.background = 'transparent';
+      nav.style.backdropFilter = 'none';
+      nav.style.webkitBackdropFilter = 'none';
+      nav.style.boxShadow = 'none';
+    }
+  }
+
+  // Only apply scroll effect on pages with scrollable nav (inicio)
+  if (nav && nav.dataset.scrollable === 'true') {
+    window.addEventListener('scroll', updateNav, { passive: true });
+    updateNav();
+  }
+
+  // Mobile menu toggle with hamburger animation
+  if (navToggle && mobileMenu) {
+    const lines = navToggle.querySelectorAll('.nav-line');
+
+    navToggle.addEventListener('click', () => {
+      const isOpen = !mobileMenu.classList.contains('hidden');
+      mobileMenu.classList.toggle('hidden', isOpen);
+
+      if (!isOpen) {
+        lines[0].style.transform = 'translateY(7px) rotate(45deg)';
+        lines[1].style.opacity = '0';
+        lines[2].style.transform = 'translateY(-7px) rotate(-45deg)';
+        if (nav) {
+          nav.style.background = 'rgba(26, 26, 26, 0.95)';
+          nav.style.backdropFilter = 'blur(20px)';
+        }
+      } else {
+        lines[0].style.transform = '';
+        lines[1].style.opacity = '1';
+        lines[2].style.transform = '';
+        updateNav();
+      }
+    });
+
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        lines[0].style.transform = '';
+        lines[1].style.opacity = '1';
+        lines[2].style.transform = '';
+        updateNav();
+      });
+    });
+  }
+</script>
