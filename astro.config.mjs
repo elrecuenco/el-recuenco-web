@@ -7,7 +7,7 @@ import AstroPWA from '@vite-pwa/astro';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://elrecuenco.github.io',
-  base: '/el-recuenco/',
+  base: '/el-recuenco-web/',
   integrations: [
     sitemap(),
     AstroPWA({
