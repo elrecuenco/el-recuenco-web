@@ -8,6 +8,7 @@ interface Props {
 }
 
 const { title, description = 'Web oficial del municipio de El Recuenco, Guadalajara. Historia, naturaleza y patrimonio en la serranía de Guadalajara.', ogImage } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <!doctype html>
@@ -16,6 +17,7 @@ const { title, description = 'Web oficial del municipio de El Recuenco, Guadalaj
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+    <link rel="canonical" href={canonicalURL.href} />
 
     <!-- Theme color for mobile browser chrome -->
     <meta name="theme-color" content="#1B3A2D" />
@@ -29,12 +31,45 @@ const { title, description = 'Web oficial del municipio de El Recuenco, Guadalaj
     <meta name="description" content={description} />
     <meta name="author" content="Ayuntamiento de El Recuenco" />
 
-    <!-- Open Graph -->
+    <!-- Open Graph / Facebook -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL.href} />
     <meta property="og:locale" content="es_ES" />
+    <meta property="og:site_name" content="Ayuntamiento de El Recuenco" />
     {ogImage && <meta property="og:image" content={ogImage} />}
+    {ogImage && <meta property="og:image:width" content="1200" />}
+    {ogImage && <meta property="og:image:height" content="630" />}
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {ogImage && <meta name="twitter:image" content={ogImage} />}
+
+    <!-- Structured Data -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "GovernmentOrganization",
+      "name": "Ayuntamiento de El Recuenco",
+      "url": canonicalURL.origin + import.meta.env.BASE_URL,
+      "logo": canonicalURL.origin + import.meta.env.BASE_URL + "favicon.svg",
+      "description": "Ayuntamiento del municipio de El Recuenco, Guadalajara. Serranía del Alto Tajo, Castilla-La Mancha.",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Plaza de Nuestra Señora de la Bienvenida, 7",
+        "addressLocality": "El Recuenco",
+        "addressRegion": "Guadalajara",
+        "postalCode": "19430",
+        "addressCountry": "ES"
+      },
+      "email": "secretaria.aytoelrecuenco@gmail.com",
+      "areaServed": {
+        "@type": "Place",
+        "name": "El Recuenco, Guadalajara"
+      }
+    })} />
 
     <!-- Security Headers -->
     <meta

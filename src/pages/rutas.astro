@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import imgMonte from '../assets/images/entorno-natural/paraje-corraliza-atalaya.jpg';
@@ -8,6 +8,8 @@ import imgMapa from '../assets/images/rutas/mapa-rutas.png';
 import imgLeyenda from '../assets/images/rutas/leyenda-rutas.png';
 
 const base = import.meta.env.BASE_URL;
+const ogImg = await getImage({ src: imgMonte, width: 1200, height: 630, format: 'jpg' });
+const ogImageUrl = new URL(ogImg.src, Astro.site).href;
 
 type Dificultad = 'Fácil' | 'Media' | 'Media-Alta';
 
@@ -89,7 +91,7 @@ const rutas = [
 ];
 ---
 
-<BaseLayout title="Rutas en El Recuenco — Senderismo y ciclismo" description="5 rutas señalizadas de senderismo y ciclismo en El Recuenco, Guadalajara. Descarga los tracks GPS (.kml) y descubre el Alto Tajo.">
+<BaseLayout title="Rutas en El Recuenco — Senderismo y ciclismo" description="5 rutas señalizadas de senderismo y ciclismo en El Recuenco, Guadalajara. Descarga los tracks GPS (.kml) y descubre el Alto Tajo." ogImage={ogImageUrl}>
 
   <Nav currentPage="rutas" />
 
