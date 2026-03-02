@@ -3,11 +3,11 @@ import { Image } from 'astro:assets';
 import escudo from '../assets/images/escudo/Escudo_del_Ayuntamiento_de_El_Recuenco.png';
 
 interface Props {
-  variant?: 'inicio' | 'rutas';
+  variant?: 'inicio' | 'turismoactivo';
 }
 
 const { variant = 'inicio' } = Astro.props;
-const isRutas = variant === 'rutas';
+const isRutas = variant === 'turismoactivo';
 ---
 
 {isRutas ? (
