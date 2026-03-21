@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import escudo from '../assets/images/escudo/Escudo_del_Ayuntamiento_de_El_Recuenco.png';
 
 interface Props {
-  currentPage?: 'inicio' | 'turismoactivo';
+  currentPage?: 'inicio' | 'turismoactivo' | 'vidrio';
 }
 
 const { currentPage = 'inicio' } = Astro.props;
@@ -16,6 +16,7 @@ const links = [
   { href: `${base}#galeria`, label: 'Galería', anchor: '#galeria' },
   { href: `${base}#videos`, label: 'Vídeos', anchor: '#videos' },
   { href: `${base}turismoactivo/`, label: 'Turismo activo', page: 'turismoactivo' },
+  { href: `${base}vidrio/`, label: 'Legado vidriero', page: 'vidrio' },
   { href: `${base}#prensa`, label: 'Prensa', anchor: '#prensa' },
   { href: `${base}#contacto`, label: 'Contacto', anchor: '#contacto' },
 ];

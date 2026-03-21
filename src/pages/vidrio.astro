@@ -1,0 +1,289 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { Image, getImage } from 'astro:assets';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import imgHero from '../assets/images/patrimonio/monumento-vidrieros.jpg';
+
+const base = import.meta.env.BASE_URL;
+const ogImg = await getImage({ src: imgHero, width: 1200, height: 630, format: 'jpg' });
+const ogImageUrl = new URL(ogImg.src, Astro.site).href;
+---
+
+<BaseLayout
+  title="La industria del vidrio — Ayuntamiento de El Recuenco"
+  description="El Recuenco fue durante más de tres siglos uno de los grandes centros vidrieros de Castilla. Sus hornos fabricaron miles de vidrieras para El Escorial y abasteció a la Casa Real."
+  ogImage={ogImageUrl}
+>
+  <Nav currentPage="vidrio" />
+
+  <!-- HERO -->
+  <section class="relative min-h-[60vh] flex items-end overflow-hidden">
+    <div class="absolute inset-0">
+      <Image
+        src={imgHero}
+        alt="Monumento a los vidrieros de El Recuenco"
+        widths={[640, 1280, 1920]}
+        sizes="100vw"
+        class="w-full h-full object-cover object-center"
+        loading="eager"
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-verde-oscuro/95 via-verde-oscuro/50 to-transparent"></div>
+    </div>
+    <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 pb-14 pt-32">
+      <p class="text-tierra-claro text-sm font-semibold tracking-widest uppercase mb-3 reveal">Historia y patrimonio</p>
+      <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-blanco leading-tight mb-5 reveal reveal-delay-1">
+        El pueblo que<br />sopló el vidrio
+      </h1>
+      <p class="text-blanco/80 text-lg sm:text-xl max-w-2xl leading-relaxed reveal reveal-delay-2">
+        Durante más de tres siglos, El Recuenco fue uno de los grandes centros vidrieros de Castilla. Sus hornos abastecieron al Monasterio de El Escorial, a la Casa Real y a media España.
+      </p>
+    </div>
+  </section>
+
+  <!-- INTRODUCCIÓN -->
+  <section class="bg-piedra-claro py-16 sm:py-24">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6">
+      <div class="section-line mb-6 reveal"></div>
+      <h2 class="text-3xl sm:text-4xl font-bold text-verde-oscuro mb-6 reveal">El orgullo de un pueblo</h2>
+      <div class="prose text-texto leading-relaxed space-y-4 reveal reveal-delay-1">
+        <p class="text-lg">
+          La fabricación del vidrio es uno de los elementos del pasado que con más orgullo llevan los vecinos y los hijos del pueblo. Durante los siglos XVI al XIX, El Recuenco fue un centro industrial de primer orden, cuya producción llegó a alcanzar los <strong>30.000 docenas de piezas anuales</strong>, distribuidas por Castilla, Extremadura, Portugal, Galicia y Andalucía.
+        </p>
+        <p>
+          La propia identidad del pueblo lleva la huella viva de esta tradición: a sus vecinos se les llama <strong>"sopleros"</strong> por la técnica del soplado del vidrio, y el apellido <strong>"Redomero"</strong> —quien hacía redomas— aparece documentado en el pueblo desde el siglo XV y se ha conservado hasta hoy.
+        </p>
+        <p>
+          El estudio más completo sobre esta industria fue publicado en 1997 por la investigadora <strong>María José Sánchez Moreno</strong> en los <em>Cuadernos de Etnología de Guadalajara</em>, y es la fuente principal de cuanto aquí se resume.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- LÍNEA DE TIEMPO -->
+  <section class="bg-fondo py-16 sm:py-24">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6">
+      <div class="section-line mb-6 reveal"></div>
+      <h2 class="text-3xl sm:text-4xl font-bold text-verde-oscuro mb-12 reveal">Tres siglos de historia</h2>
+
+      <div class="space-y-10">
+
+        <!-- Siglo XVI -->
+        <div class="flex gap-6 reveal">
+          <div class="flex flex-col items-center">
+            <div class="w-10 h-10 rounded-full bg-verde-oscuro flex items-center justify-center text-blanco font-bold text-sm shrink-0">XVI</div>
+            <div class="w-px flex-1 bg-verde/30 mt-2"></div>
+          </div>
+          <div class="pb-8">
+            <h3 class="text-xl font-bold text-verde-oscuro mb-2">Los orígenes y El Escorial</h3>
+            <p class="text-texto/80 leading-relaxed">
+              Los primeros documentos sobre hornos de vidrio en El Recuenco datan de 1553, aunque todo indica que la actividad comenzó antes. El momento clave llegó cuando los hornos del pueblo fueron contratados para fabricar <strong>más de 10.000 cuadros de vidrio</strong> para las ventanas del Monasterio de San Lorenzo de El Escorial, junto con centenares de alambiques y redomas para su botica. Durante doce años ininterrumpidos los hornos trabajaron para Felipe II. El maestro veneciano Guillermo Carrara y su hijo Francisco dirigieron la operación, trayendo técnicas del vidrio soplado al estilo veneciano.
+            </p>
+          </div>
+        </div>
+
+        <!-- Siglo XVII -->
+        <div class="flex gap-6 reveal">
+          <div class="flex flex-col items-center">
+            <div class="w-10 h-10 rounded-full bg-verde flex items-center justify-center text-blanco font-bold text-sm shrink-0">XVII</div>
+            <div class="w-px flex-1 bg-verde/30 mt-2"></div>
+          </div>
+          <div class="pb-8">
+            <h3 class="text-xl font-bold text-verde-oscuro mb-2">Los vidrieros flamencos</h3>
+            <p class="text-texto/80 leading-relaxed">
+              En 1679 llegó a la zona el maestro flamenco <strong>Deudonne Lambotte</strong>, hijo de un vidriero de Namur (Flandes), quien instaló sus hornos en El Recuenco, Arbeteta y Alcantud. Trajo de Flandes a su familia y a veinticinco oficiales especializados. A su muerte en 1683, sin revelar su fórmula secreta del vidrio "cristalino", le sucedió el italiano <strong>Giaccomo Bertoletti</strong>. Esta época supuso la introducción de nuevas técnicas que mejoraron la calidad de las pastas.
+            </p>
+          </div>
+        </div>
+
+        <!-- Siglo XVIII -->
+        <div class="flex gap-6 reveal">
+          <div class="flex flex-col items-center">
+            <div class="w-10 h-10 rounded-full bg-tierra flex items-center justify-center text-blanco font-bold text-sm shrink-0">XVIII</div>
+            <div class="w-px flex-1 bg-tierra/30 mt-2"></div>
+          </div>
+          <div class="pb-8">
+            <h3 class="text-xl font-bold text-verde-oscuro mb-2">El esplendor: proveedor de la Casa Real</h3>
+            <p class="text-texto/80 leading-relaxed">
+              El siglo XVIII fue la época de mayor esplendor. En 1722 llegaron a funcionar cuatro fábricas simultáneamente. El fabricante <strong>Diego Dorado</strong> recibió el encargo de proveer a la <strong>Casa Real y a la Real Farmacia</strong> con vasos, matraces, morteros y frascos para el acarreo del agua de Su Majestad. La fama de los vidrios de El Recuenco se extendió por toda la Corte. En 1740, Felipe V concedió al pueblo la facultad de tener en Madrid una lonja para vender el vidrio al por mayor.
+            </p>
+          </div>
+        </div>
+
+        <!-- Siglo XIX -->
+        <div class="flex gap-6 reveal">
+          <div class="flex flex-col items-center">
+            <div class="w-10 h-10 rounded-full bg-piedra-oscuro flex items-center justify-center text-blanco font-bold text-sm shrink-0">XIX</div>
+          </div>
+          <div class="pb-2">
+            <h3 class="text-xl font-bold text-verde-oscuro mb-2">El declive y el olvido</h3>
+            <p class="text-texto/80 leading-relaxed">
+              A mediados del siglo XIX la industria vidriera se extinguió definitivamente. Las fábricas desaparecieron y en su lugar se levantaron casas. Apenas quedaron restos: algunos crisoles, fragmentos de vidrio de colores entre las cenizas de los hornos, una piedra de moler en el patio de la última fábrica, y el recuerdo en los apellidos y apodos del pueblo.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CÓMO SE HACÍA -->
+  <section class="bg-verde-oscuro text-blanco py-16 sm:py-24">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6">
+      <div class="section-line mb-6 reveal" style="background: var(--color-tierra-claro)"></div>
+      <h2 class="text-3xl sm:text-4xl font-bold mb-10 reveal">Cómo se fabricaba</h2>
+
+      <div class="grid sm:grid-cols-2 gap-6">
+        <div class="bg-white/10 rounded-2xl p-6 reveal">
+          <h3 class="text-tierra-claro font-bold text-lg mb-3">Las materias primas</h3>
+          <p class="text-blanco/80 leading-relaxed text-sm">
+            El Recuenco reunía las condiciones ideales: abundantes bosques de pinos para combustible, yacimientos de arena en El Hoyo y Alto la Manta, y tierra rica en arcilla, sosa y potasa. La barrilla —componente esencial— se importaba de La Mancha y Murcia. Cada horno consumía <strong>30 cargas de leña en 24 horas</strong> y necesitaba 600 quintales de barrilla al año.
+          </p>
+        </div>
+
+        <div class="bg-white/10 rounded-2xl p-6 reveal reveal-delay-1">
+          <h3 class="text-tierra-claro font-bold text-lg mb-3">El horno y los crisoles</h3>
+          <p class="text-blanco/80 leading-relaxed text-sm">
+            El horno o "capilla" era abovedado o circular, con tres bocas ("piqueras"). Alrededor de un hogar central —el "culerón"— se disponían seis crisoles. Los propios operarios fabricaban los crisoles como alfareros, con técnica de rollos de arcilla, y se reponían periódicamente. El horno tenía dos plantas: la del fundido y la del temple.
+          </p>
+        </div>
+
+        <div class="bg-white/10 rounded-2xl p-6 reveal">
+          <h3 class="text-tierra-claro font-bold text-lg mb-3">El soplado</h3>
+          <p class="text-blanco/80 leading-relaxed text-sm">
+            El vidriero tomaba del crisol una porción de vidrio fundido con una caña de hierro de 120-180 cm, y trabajaba <strong>soplando y moldeando</strong> alternativamente mientras giraba la caña sobre el sillón —el "banco del vidriero"—. Con pinzas adelgazaba el cuello, con tijeras cortaba los extremos, y con moldes de bronce creaba formas como la gran copa de pie.
+          </p>
+        </div>
+
+        <div class="bg-white/10 rounded-2xl p-6 reveal reveal-delay-1">
+          <h3 class="text-tierra-claro font-bold text-lg mb-3">El estilo</h3>
+          <p class="text-blanco/80 leading-relaxed text-sm">
+            El vidrio de El Recuenco era incoloro, limpio y transparente. De color verde azulado oscuro que se aclaraba soplando hasta conseguir extremada finura y ligereza. Las piezas se estiraban y pellizcaban por los bordes dándoles forma octogonal. Algunas seguían el <strong>"estilo veneciano"</strong>. Los colores van del ámbar al blanco translúcido, verdes azulados y color vino tinto.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LA RED DE DISTRIBUCIÓN -->
+  <section class="bg-fondo py-16 sm:py-24">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6">
+      <div class="section-line mb-6 reveal"></div>
+      <h2 class="text-3xl sm:text-4xl font-bold text-verde-oscuro mb-6 reveal">De El Recuenco al mundo</h2>
+      <p class="text-texto/80 leading-relaxed mb-8 reveal reveal-delay-1">
+        Los arrieros del vidrio recorrían la geografía española durante meses cargando botellas, garrafas, picheles, frascas y saleros en grandes cestos a lomos de caballerías, llegando hasta los puertos y cruzando la frontera con Portugal.
+      </p>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 reveal reveal-delay-2">
+        {[
+          { lugar: 'Madrid', detalle: '1.000 cargas/año' },
+          { lugar: 'Portugal', detalle: 'Venta regular' },
+          { lugar: 'Galicia', detalle: 'Venta regular' },
+          { lugar: 'La Casa Real', detalle: 'Proveedor oficial' },
+        ].map(({ lugar, detalle }) => (
+          <div class="bg-piedra-claro rounded-2xl p-4 text-center">
+            <p class="font-bold text-verde-oscuro text-sm">{lugar}</p>
+            <p class="text-texto/60 text-xs mt-1">{detalle}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- PIEZAS EN MUSEOS -->
+  <section class="bg-piedra-claro py-16 sm:py-24">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6">
+      <div class="section-line mb-6 reveal"></div>
+      <h2 class="text-3xl sm:text-4xl font-bold text-verde-oscuro mb-4 reveal">Un legado disperso</h2>
+      <p class="text-texto/80 leading-relaxed mb-8 reveal reveal-delay-1">
+        Piezas procedentes de El Recuenco se conservan en museos y colecciones de todo el mundo, muchas aún sin clasificar. La investigadora María José Sánchez Moreno localizó diecisiete piezas identificadas, además de otras probables en farmacias reales y colecciones privadas.
+      </p>
+
+      <ul class="space-y-3 reveal reveal-delay-2">
+        {[
+          'Museo Arqueológico Nacional (Madrid)',
+          'Instituto Amatller de Arte Hispánico (Barcelona)',
+          'Museo de Arte de Gerona',
+          'Farmacia del Hospital de Tavera (Toledo)',
+          'Farmacia del Palacio Real (Madrid)',
+          'Victoria and Albert Museum (Londres)',
+          'Hispanic Society (Nueva York)',
+        ].map(museo => (
+          <li class="flex items-center gap-3">
+            <span class="w-1.5 h-1.5 rounded-full bg-tierra shrink-0"></span>
+            <span class="text-texto/80 text-sm">{museo}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- VÍDEO -->
+  <section class="bg-fondo py-16 sm:py-20">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6">
+      <div class="section-line mb-6 reveal"></div>
+      <h2 class="text-3xl sm:text-4xl font-bold text-verde-oscuro mb-8 reveal">El vidrio en imágenes</h2>
+      <div class="bg-blanco rounded-2xl shadow-sm border border-piedra/30 overflow-hidden reveal reveal-delay-1">
+        <div class="yt-facade relative aspect-video cursor-pointer group" data-videoid="bhsSRFPm7yk">
+          <img
+            src="https://i.ytimg.com/vi/bhsSRFPm7yk/maxresdefault.jpg"
+            alt="La industria del vidrio en El Recuenco"
+            loading="lazy"
+            class="absolute inset-0 w-full h-full object-cover"
+          />
+          <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+            <div class="w-16 h-16 sm:w-20 sm:h-20 bg-red-600 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+              <svg class="w-7 h-7 sm:w-9 sm:h-9 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="p-3 sm:p-4 text-center">
+          <p class="text-sm font-semibold text-texto">La industria del vidrio en El Recuenco</p>
+          <p class="text-xs text-texto-claro mt-0.5">Historia de una tradición artesanal de tres siglos</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    document.querySelectorAll('.yt-facade').forEach(el => {
+      el.addEventListener('click', () => {
+        const id = (el as HTMLElement).dataset.videoid;
+        if (!id) return;
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1`;
+        iframe.title = el.querySelector('img')?.alt || '';
+        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+        iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-presentation');
+        iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
+        iframe.allowFullscreen = true;
+        iframe.className = 'absolute inset-0 w-full h-full';
+        iframe.style.border = '0';
+        el.replaceWith(iframe);
+      });
+    });
+  </script>
+
+  <!-- CTA / ENLACE -->
+  <section class="bg-verde-oscuro py-16 sm:py-20">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 text-center">
+      <p class="text-tierra-claro text-sm font-semibold tracking-widest uppercase mb-4 reveal">Quieres saber más</p>
+      <h2 class="text-3xl sm:text-4xl font-bold text-blanco mb-5 reveal reveal-delay-1">
+        Lee el estudio completo
+      </h2>
+      <p class="text-blanco/70 leading-relaxed mb-8 reveal reveal-delay-2">
+        La Asociación Cultural Amigos de El Recuenco ha publicado en su web el trabajo íntegro de María José Sánchez Moreno, incluyendo documentos de archivo, fotografías de piezas y fuentes originales.
+      </p>
+      <a
+        href="https://www.elrecuenco.com/la-fabricacion-del-vidrio-en-el-recuenco/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-block bg-tierra text-blanco font-semibold px-8 py-4 rounded-full hover:bg-tierra-oscuro transition-colors no-underline reveal reveal-delay-3"
+      >
+        Ver información oficial →
+      </a>
+    </div>
+  </section>
+
+  <Footer variant="turismoactivo" />
+</BaseLayout>
